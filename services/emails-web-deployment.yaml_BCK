@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: emails-web
+  name: emails-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: emails-web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: emails-web
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - python3 ./emails/manage.py makemigrations && python3 ./emails/manage.py migrate && python3 ./emails/manage.py runserver 0.0.0.0:8002
+          image: vibhalla/emails-web:latest
+          name: emails-web
+          ports:
+            - containerPort: 8002
+          resources: {}
+      restartPolicy: Always
+status: {}

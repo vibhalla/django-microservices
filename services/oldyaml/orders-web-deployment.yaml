@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: orders-web
+  name: orders-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: orders-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: orders-web
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - python3 ./orders/manage.py makemigrations && python3 ./orders/manage.py migrate && python3 ./orders/manage.py runserver 0.0.0.0:8003
+          image: vibhalla/orders-web:latest
+          name: orders-web
+          ports:
+            - containerPort: 8003
+          resources: {}
+          volumeMounts:
+            - mountPath: /code
+              name: orders-web-claim0
+      restartPolicy: Always
+      volumes:
+        - name: orders-web-claim0
+          persistentVolumeClaim:
+            claimName: orders-web-claim0
+status: {}
