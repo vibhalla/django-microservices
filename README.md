@@ -1,5 +1,5 @@
 # UNMAINTAINED
-
+# Copied from https://github.com/cyantarek/django-microservices/tree/master/services/emails/api and modified for Kubernetes deployment
 # Microservices architecture based web application
 
 This is example web application based on microservices architecture. It has 3 decoupled and scalable services:
