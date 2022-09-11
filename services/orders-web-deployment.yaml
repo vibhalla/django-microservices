@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: orders-web
+  name: orders-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: orders-web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: orders-web
+    spec:
+      containers:
+        - image: vibhalla/orders-web:latest
+          name: orders-web
+          ports:
+            - containerPort: 8003
+          resources: {}
+      restartPolicy: Always
+status: {}

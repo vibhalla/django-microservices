@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: products-web
+  name: products-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: products-web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: products-web
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - python3 ./products/manage.py makemigrations && python3 ./products/manage.py migrate && python3 ./products/manage.py runserver 0.0.0.0:8001
+          image: products-web
+          name: products-web
+          ports:
+            - containerPort: 8001
+          resources: {}
+          volumeMounts:
+            - mountPath: /code
+              name: products-web-claim0
+      restartPolicy: Always
+      volumes:
+        - name: products-web-claim0
+          persistentVolumeClaim:
+            claimName: products-web-claim0
+status: {}
